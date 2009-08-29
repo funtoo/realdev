@@ -59,40 +59,43 @@ fi
 cd $1 || die "Could not change directory to $1."
 
 ! [ -c console ] && rm -rf console
-[ -e console ] || { mknod console c 5 1; chmod 600 console; } || die
+[ -e console ] || { mknod console c 5 1 && chmod 600 console; } || die
 
 ! [ -c null ] && rm -rf null
-[ -e null ] || { mknod null c 1 3; chmod 777 null; } || die
+[ -e null ] || { mknod null c 1 3 && chmod 777 null; } || die
 
 ! [ -c tty ] && rm -rf tty
-[ -e tty ] || { mknod tty c 5 0; chmod 666 tty; } || die
+[ -e tty ] || { mknod tty c 5 0 && chmod 666 tty; } || die
 
 ! [ -c ttyp0 ] && rm -rf ttyp0
-[ -e ttyp0 ] || { mknod ttyp0 c 3 0; chmod 644 ttyp0; } || die
+[ -e ttyp0 ] || { mknod ttyp0 c 3 0 && chmod 644 ttyp0; } || die
 
 ! [ -c ptyp0 ] && rm -rf ptyp0
-[ -e ptyp0 ] || { mknod ptyp0 c 2 0; chmod 644 ptyp0; } || die
+[ -e ptyp0 ] || { mknod ptyp0 c 2 0 && chmod 644 ptyp0; } || die
 
 ! [ -c ptmx ] && rm -rf ptmx
-[ -e ptmx ] || { mknod ptmx c 5 2; chmod 666 ptmx; } || die
+[ -e ptmx ] || { mknod ptmx c 5 2 && chmod 666 ptmx; } || die
 
 ! [ -c tty0 ] && rm -rf tty0
-[ -e tty0 ] || { mknod tty0 c 4 0; chmod 666 tty0; } || die
+[ -e tty0 ] || { mknod tty0 c 4 0 && chmod 666 tty0; } || die
 
 ! [ -c urandom ] && rm -rf urandom
-[ -e urandom ] || { mknod urandom c 1 9; chmod 666 urandom; } || die
+[ -e urandom ] || { mknod urandom c 1 9 && chmod 666 urandom; } || die
 
 ! [ -c random ] && rm -rf random
-[ -e random ] || { mknod random c 1 8; chmod 666 random; } || die
+[ -e random ] || { mknod random c 1 8 && chmod 666 random; } || die
 
 ! [ -c zero ] && rm -rf zero
-[ -e zero ] || { mknod zero c 1 5; chmod 666 zero; } || die
+[ -e zero ] || { mknod zero c 1 5 && chmod 666 zero; } || die
+
+! [ -c kmsg ] && rm -rf kmsg
+[ -e kmsg ] || { mknod kmsg c 1 11 && chmod 600 kmsg; } || die
 
 for x in 0 1 2 3
 do
 	# These devices are for initial serial console
 	! [ -c ttyS${x} ] && rm -rf ttyS${x}
-	[ -e ttyS${x} ] || { mknod ttyS${x} c 4 $(( 64 + $x )); chmod 600 ttyS${x}; } || die
+	[ -e ttyS${x} ] || { mknod ttyS${x} c 4 $(( 64 + $x )) && chmod 600 ttyS${x}; } || die
 done
 
 [ -d fd ] || ln -svf /proc/self/fd fd || die
